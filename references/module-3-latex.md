@@ -14,6 +14,46 @@
    - **样式级**：引用格式、断词、跨页孤行、图表分辨率
 4. 输出带位置标注的修改建议
 
+## 🆕 静态体检脚本（v3）
+
+直接用脚本做第一遍体检，覆盖未闭合环境/未定义引用/重复 label/定理一致性/写作残留/匿名泄漏：
+
+```bash
+python scripts/check_tex.py paper/
+# 或指定文件
+python scripts/check_tex.py --files main.tex sections/intro.tex --bib references.bib
+```
+
+> 脚本在 paper-master 目录的 `scripts/` 下。有 ERROR 先修完再人工精修。
+
+## 🆕 页数校验（v3）
+
+- **ML 会议**（ICLR=9/NeurIPS=9/ICML=8/AAAI=7）：正文到 Conclusion 结束，参考文献+附录不计
+- **IEEE**：参考文献计入总页数（journal 12-14 / conference 5-8）
+- **Nature/CNS**：3-5 页正文
+
+```bash
+pdftotext main.pdf - | python -c "
+import sys
+text = sys.stdin.read()
+pages = text.split('\f')
+for i, page in enumerate(pages):
+    if any(w in page for w in ['References', 'Bibliography']):
+        print(f'References start on page {i+1}')"
+```
+
+超页处理：优先移附录（证明/额外结果）、压缩表格、收紧写作。
+
+## 🆕 定理重述一致性检查（理论论文，v3）
+
+正文声明的定理/命题/引理/推论 ↔ 附录/正文证明块必须一致：
+- 量化词、假设、分支（case splits）逐条比对
+- 术语漂移检测：`stationary` vs `terminal`、改名后的假设等视为不一致
+- 发现差异：加显式 notation bridge 或修正，不静默重命名
+- 用 `check_tex.py` 的定理一致性检查项粗查 + 人工细读
+
+> 理论论文若附录只有 sketch 而无完整证明，会在理论型会议被拒。务必核对。
+
 ## 安全规则（永不碰的内容）
 
 - `\cite{}`、`\ref{}`、`\label{}` 内部

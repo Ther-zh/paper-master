@@ -28,11 +28,25 @@
 
 | 期刊/会议 | 风格文件 | 特性 |
 |----------|---------|------|
-| Nature 系列 | [journal-styles/nature-cns.md](journal-styles/nature-cns.md) | 7-Pass 编辑法、出版级图表、审稿视角 |
+| Nature 系列 | [journal-styles/nature-cns.md](journal-styles/nature-cns.md) | 出版级图表规范、Nature 审稿视角、写作偏好（见模块2 7-Pass） |
 | AAAI | SKILL.md 内置 | 双栏、匿名化、页数限制 |
-| ICML/NeurIPS | 待扩充 | — |
+| IEEE 期刊/会议 | 🆕 [venue/ieee.md](venue/ieee.md) | 非匿名、参考文献计入页数、`\cite{}` 非 natbib、IEEEtran 模板、IEEEkeywords |
+| ICML/NeurIPS | venue-checklists | 页数/复现性/匿名 |
 | CVPR | 待扩充 | — |
-| IEEE/ACM | 待扩充 | — |
+| ACM | 待扩充 | — |
+
+> **注意**：7-Pass 编辑法的完整流程定义在 [模块2](module-2-polish.md) 中。本模块仅引用 Nature 特定的风格差异（如 Pass 6 的保守限定词偏好），执行润色时路由回模块2，避免内容重复。
+
+## 🆕 系统类论文（OSDI/SOSP/ASPLOS/NSDI/EuroSys）
+
+若目标为系统方向会议，采用结构化蓝图：
+- **12 页页数分配**：Intro ~1.5、Background/Related ~2、Design ~4、Implementation ~1、Evaluation ~3、Discussion ~0.5
+- **写作模式**：
+  - *Gap Analysis*：现有系统缺什么 → 我们补什么
+  - *Observation-Driven*：从实际观察/痛点出发引出设计
+  - *Contribution List*：明确列贡献
+  - *Thesis Formula*：`X is better for Y in Z`（Irene Zhang 公式）
+- 评价重实证：延迟/吞吐/扩展性，和基线公平对比
 
 ---
 
@@ -44,9 +58,19 @@
 | 读者 | 领域专家 | 跨学科科学家 | 领域专家 |
 | 摘要 | 150-200 词，结构化 | ~150 词，叙事性 | 150-250 词 |
 | 图表 | 4-6 个 | 3-4 个（高信息密度） | 4-8 个 |
-| 被动语态 | 可接受 | 不推荐 | 可接受 |
-| Claim 强度 | "demonstrate" | "suggest/indicate"（保守） | "demonstrate/show" |
+| 被动语态 | 可接受 | 不推荐（见模块2 Pass 3） | 可接受 |
+| Claim 强度 | "demonstrate" | "suggest/indicate"（保守，见模块2 Pass 6） | "demonstrate/show" |
 | 补充材料 | 单独文件 | 独立 SI 文档 | 可选 |
+
+### Nature/CNS 场景专属动作
+
+当目标为 Nature/CNS 时，按以下优先顺序执行：
+1. 加载 [journal-styles/nature-cns.md](journal-styles/nature-cns.md) 获取完整风格指南
+2. 执行 **段落润色**（→ 路由到模块2）：使用 7-Pass 编辑法，特别关注 Pass 6（用 suggest/indicate 替代 prove/demonstrate）
+3. 执行 **LaTeX 检查**（→ 路由到模块3）：应用出版级图表规范
+4. 执行 **审稿预检**（→ 路由到模块5）：使用 Nature 审稿人 5 维评估
+
+> 其余模块（模块8-11）与 Nature 稿件通用，无特殊差异。
 
 ---
 

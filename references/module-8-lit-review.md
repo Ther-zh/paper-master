@@ -16,13 +16,45 @@
 - **搜索记录**：记录每次搜索的数据库、关键词、结果数、日期
 
 #### 1.2 文献筛选（PRISMA 流程）
+
+执行步骤：
 ```
 全量搜索 → 去重 → 标题/摘要筛选 → 全文筛选 → 最终纳入
 ```
 - 记录每一步排除的论文数和原因
-- 制作 PRISMA 流程图
+- 制作 PRISMA 流程图（输出以下 Mermaid 代码）
 
-#### 1.3 文献获取
+**PRISMA 流程图模板**（直接输出此代码，填入实际数字）：
+```mermaid
+flowchart TD
+    A["数据库检索获得文献 (n= )"] --> B["其他来源补充 (n= )"]
+    A --> C["去重后获得文献 (n= )"]
+    B --> C
+    C --> D["标题/摘要筛选 (n= )"]
+    D --> E["排除 (n= ): 不相关/非英文/非同行评审"]
+    D --> F["全文筛选 (n= )"]
+    F --> G["排除 (n= ): 无全文/方法不匹配/数据不充分"]
+    F --> H["最终纳入文献 (n= )"]
+```
+
+#### 1.3 搜索字符串模板
+
+按领域提供可复用的搜索字符串：
+```
+# ML/CV 论文搜索 (Semantic Scholar / arXiv)
+("attention mechanism" OR "self-attention" OR "transformer") AND (image OR vision OR classification) 
+  year:2022-2026
+
+# NLP 论文搜索
+("large language model" OR "LLM") AND (evaluation OR benchmark OR reasoning) 
+  year:2023-2026
+
+# 系统综述搜索 (PubMed / Scopus)
+("systematic review" OR "meta-analysis") AND (PRISMA OR "literature survey") 
+  year:2020-2026
+```
+
+#### 1.4 文献获取
 - PDF 下载与归档（命名规范：`authorYYYY-title.pdf`）
 - 使用 pdftotext 提取文本用于 agent 分析
 - BibTeX 管理（使用 Zotero 或手动 .bib 文件）

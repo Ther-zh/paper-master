@@ -7,6 +7,33 @@
 
 ## 工作流
 
+### 阶段0：🆕 真实 BibTeX 获取（v3，杜绝幻觉引用）
+
+需要新引用条目时，**不要凭记忆生成 BibTeX**——用脚本从 DBLP/CrossRef 拉取 publisher 验证过的真实条目：
+
+```bash
+# 搜索 DBLP（列出候选）
+python scripts/fetch_bib.py search "attention is all you need" --author "Vaswani"
+
+# 获取第一条命中的真实 BibTeX（--key 指定 citation key）
+python scripts/fetch_bib.py fetch "attention is all you need" --author "Vaswani" --key vaswani2017attention
+
+# 按 DOI 获取（适用于 arXiv 预印本，arXiv DOI = 10.48550/arXiv.{id}）
+python scripts/fetch_bib.py doi 10.48550/arXiv.1706.03762
+```
+
+回退链：**DBLP（质量最高）→ CrossRef/DOI（兜底）→ `% [VERIFY]` 标记（最后一招）**。
+拉不到就标 `[VERIFY]`，**绝不编造**。LLM 记忆生成的 BibTeX 常幻觉 venue/页码/共同作者。
+
+获取后可跑卫生校验：
+
+```bash
+# 检查死条目 + year/venue/author 一致性（只读，不改文件）
+python scripts/fetch_bib.py clean main.tex references.bib
+```
+
+输出 `DEAD ENTRIES`（未引用条目，应删）、`MISMATCH`（元数据与权威源不符）、`VERIFY`（无法验证）。
+
 ### 阶段1：引用完整性检查
 
 #### 1.1 引用存在性验证
@@ -78,8 +105,26 @@
 
 - [ ] 所有 .bib 条目按字母顺序排列？
 - [ ] 所有条目使用统一的 citation key 格式？（推荐 `authorYYYYkeyword`）
-- [ ] 清理未使用的 .bib 条目？
+- [ ] 清理未使用的 .bib 条目？（可用 `python scripts/fetch_bib.py clean` 检测 DEAD ENTRIES）
 - [ ] 补全缺失字段的条目？
+
+### 🆕 阶段6：引用上下文适切性审计（v3，第三轴）
+
+最危险的引用问题不是明显造假，而是「**真实论文用错语境**」——引用真实存在，但它并不支撑你当前的 claim。
+
+对每个 `\cite{}`：
+1. 提取引用所在句子的完整上下文（前后 ≥1 句）
+2. 判断该 claim 是否真是被引论文所建立的：
+   - **SUPPORTS**：被引论文确实支撑该 claim
+   - **WEAK**：部分相关但支撑不足
+   - **WRONG**：语境错误（被引论文实际持相反观点）
+3. 判定 `KEEP / FIX / REPLACE / REMOVE`
+   - REPLACE：找真正支撑该 claim 的另一篇论文
+   - REMOVE：幻觉/无法支撑
+
+**高危信号**：引用 Self-Refine 去支撑「self-feedback 产生相关误差」（实际论文主张相反）、把 arXiv 预印本当正式 venue、年份漂移、phantom DOI。
+
+> 对可疑条目，用 `scripts/fetch_bib.py` 的 DBLP/CrossRef 链辅助核实存在性与元数据，上下文判断需要人工/跨模型核对。
 
 ## 输出格式
 

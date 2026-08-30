@@ -1,140 +1,100 @@
-# 📝 paper-master v2
+# 📝 paper-master v3
 
-> 一站式学术论文写作 Agent Skill — 集 40+ 开源技能之所长
+> 一站式学术论文全生命周期写作 Skill — 从研究证据到投稿，双模式（咨询 + 真实写作）
 
-[![Version](https://img.shields.io/badge/version-2.0-blue)]()
+[![Version](https://img.shields.io/badge/version-3.0-blue)]()
 [![Modules](https://img.shields.io/badge/modules-11-green)]()
+[![Workflow](https://img.shields.io/badge/workflow-W0--W7-orange)]()
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)]()
 
-paper-master 是面向 AI Agent（Claude Code / Codex / Cursor）的学术论文写作 Skill。从**文献调研**到**投稿 Cover Letter**，覆盖论文写作全流程。v2 版本吸收了 Nature Skill 生态、scicomp-research-skills、citation-verifier 等 40+ 个开源技能的方法论精华。
+paper-master v3 是面向 AI Agent（opencode / Claude Code / Codex / Cursor）的学术论文**全生命周期**写作 Skill。v3 从「纯咨询顾问」升级为「**真实写作引擎 + 全流程质检**」。
 
----
+## 🎭 双模式
 
-## 🚀 快速开始
+| 模式 | 何时用 | 行为 |
+|------|--------|------|
+| **咨询模式**（默认） | 已有论文草稿需润色/审稿/排版/引用检查 | 输出结构化建议 + `[建议]` 标注，用户确认后修改 |
+| **生成模式**（显式） | 「写论文」「从结果生成论文」、传入 NARRATIVE_REPORT | 从证据**真实写作**可编译论文草稿，受证据约束 |
 
-激活 paper-master 后，直接描述你的需求：
+**生成模式铁律**：只写证据支持的内容；缺数据写 `DATA_NEEDED` 占位；引用用 `fetch_bib.py` 真实获取；绝不编造数字/结果/引用。
+
+## 🔄 全生命周期工作流
 
 ```
-帮我润色这段 Abstract
-投稿 Nature 前帮我挑毛病
-帮我做这个方向的文献综述
-检查我的引用是否都真实存在
-帮我规划博士论文结构
+W0 输入契约 → W1 规划(Claims-Evidence+GAP) → W2 生成 → W3 图表 → W4 编译校验
+                                                              ↓
+W7 投稿 ← W6 适配润色 ← W5 审计(数值claim+引用) ←──────────────┘
 ```
 
-Skill 会自动路由到对应模块，输出结构化建议。
+## 🛠️ 可执行脚本（v3 新增）
 
----
+| 脚本 | 用途 |
+|------|------|
+| `scripts/fetch_bib.py` | 真实 BibTeX 获取（DBLP→CrossRef）+ bib 卫生校验（死条目/元数据不一致） |
+| `scripts/check_tex.py` | 静态 LaTeX 健康检查（未闭合环境/未定义引用/重复label/定理一致性/写作残留/匿名泄漏） |
 
 ## 🧩 11 大模块
 
-| # | 模块 | 触发场景 | 来源 |
-|---|------|---------|------|
-| 1 | **结构策略** | 论文结构规划、IMRAD 组织 | 原有 |
-| 2 | **段落润色** | 润色、改写、学术化表达 | 🆕 Nature 7-Pass 编辑法 |
-| 3 | **LaTeX 精修** | 编译错误、格式、图表排版 | 🆕 出版级图表规范 |
-| 4 | **期刊适配** | 适配目标期刊/会议风格、换投 | 🆕 Nature/CNS 风格库 |
-| 5 | **审稿预检** | 投稿前检查、模拟审稿 | 🆕 对抗性自审 + 声明-证据对齐 |
-| 6 | **去 AI 痕迹** | 降低 AI 检测率、humanize | 原有 |
-| 7 | **Cover Letter** | 投稿信撰写 | 原有 |
-| 8 | **文献调研** 🆕 | 文献搜索、综述写作、PRISMA 流程 | scicomp + SLR 方法论 |
-| 9 | **引用验证** 🆕 | DOI 验证、引用真实性、BibTeX 格式 | citation-verifier |
-| 10 | **学位论文** 🆕 | 硕博论文、开题、盲审、答辩 | dissertation-workflow |
-| 11 | **论文翻译** 🆕 | 中英互译、术语一致性 | arxiv-translator |
+| # | 模块 | v3 增强 |
+|---|------|---------|
+| 1 | 结构策略 | Claims-Evidence Matrix + GAP_REPORT + DATA_NEEDED |
+| 2 | 段落润色 | Banana Rule 术语一致 + 数值/结论强度保护 |
+| 3 | LaTeX 精修 | check_tex.py 静态体检 + 页数/溢出校验 + 定理一致性 |
+| 4 | 期刊适配 | IEEE 专项规范 + 系统论文蓝图 |
+| 5 | 审稿预检 | 七类数值 claim 审计 + 编辑白名单 + 跨模型独立性 |
+| 6 | 去 AI 痕迹 | 沿用 |
+| 7 | Cover Letter | 沿用 |
+| 8 | 文献调研 | 沿用 |
+| 9 | 引用验证 | fetch_bib.py 真实获取链 + 引用上下文适切性审计 |
+| 10 | 学位论文 | 沿用 |
+| 11 | 论文翻译 | 沿用 |
 
----
+## 🚀 快速开始
 
-## 🎯 特色能力
-
-### Nature 7-Pass 编辑法
-吸收 nature-style-writer（855 downloads）的分层编辑流程：
 ```
-Diagnose → Grammar → Active → Verbs → Shorten → Sharpen → Flow
+# 咨询模式（默认）
+帮我润色这段 Abstract
+投稿 Nature 前帮我挑毛病
+检查我的引用是否都真实存在
+
+# 生成模式
+基于 results/ 和我的实验记录写一篇 ICLR 论文
+这是 NARRATIVE_REPORT.md，帮我生成论文全流程
 ```
-
-### 出版级图表规范
-吸收 nature-figure（975 downloads）的图表设计标准：
-- 色盲友好配色方案
-- matplotlib 出版级 rcParams
-- 图表自明性检查
-
-### 对抗性自审
-吸收 scicomp-research-skills 的审稿方法论：
-- 假装竞争对手找出最弱 3 点
-- 为每个 claim 建立证据映射
-- Nature 审稿人 5 维评估框架
-
-### 声明-证据对齐
-每个 major claim 必须有对应的数据/引用/推理支撑，标记无证据的 bare claim。
-
----
 
 ## 📁 文件结构
 
 ```
 paper-master/
-├── SKILL.md                         ← 主路由（11模块 + 智能路由）
-├── SKILL-v0-backup.md               ← 旧版备份
-├── README.md                        ← 本文件
-├── references/
-│   ├── module-1-structure.md        ← 结构策略
-│   ├── module-2-polish.md           ← 🆕 段落润色（Nature 7-Pass）
-│   ├── module-3-latex.md            ← 🆕 LaTeX 精修（图表规范）
-│   ├── module-4-journal.md          ← 🆕 期刊适配（风格库）
-│   ├── module-5-audit.md            ← 🆕 审稿预检（对抗性自审）
-│   ├── module-6-deai.md             ← 去 AI 痕迹
-│   ├── module-7-cover-letter.md     ← Cover Letter
-│   ├── module-8-lit-review.md       ← 🆕 文献调研
-│   ├── module-9-citation-check.md   ← 🆕 引用验证
-│   ├── module-10-thesis.md          ← 🆕 学位论文
-│   ├── module-11-translation.md     ← 🆕 论文翻译
-│   ├── polish-prompts.md            ← 润色 Prompt 模板库
-│   ├── domain-rules/
-│   │   ├── ml-cv-nlp.md             ← ML/CV/NLP 领域规则
-│   │   └── cs-engineering.md        ← CS 工程类论文规则
-│   └── journal-styles/
-│       └── nature-cns.md            ← 🆕 Nature/CNS 完整风格指南
-└── scripts/                         ← 辅助脚本
+├── SKILL.md                          ← 主路由（双模式 + 11 模块 + 工作流）
+├── README.md                         ← 本文件
+├── scripts/
+│   ├── fetch_bib.py                  ← 🆕 真实 BibTeX 获取链
+│   └── check_tex.py                  ← 🆕 静态 LaTeX 健康检查
+└── references/
+    ├── workflow-W0-input.md          ← 🆕 生成模式输入契约
+    ├── workflow-W1-plan.md           ← 🆕 Claims-Evidence 规划 + GAP_REPORT
+    ├── workflow-W2-write.md          ← 🆕 受证据约束写作
+    ├── workflow-W4-compile.md        ← 🆕 编译校验 + 页数
+    ├── workflow-W5-audit.md          ← 🆕 数值 claim + 引用审计
+    ├── workflow-W6-adapt.md          ← 🆕 期刊适配 + 润色
+    ├── workflow-W7-submit.md         ← 🆕 投稿门禁
+    ├── edit-whitelist.md             ← 🆕 编辑白名单协议
+    ├── venue/ieee.md                 ← 🆕 IEEE 期刊/会议规范
+    ├── module-1..11*.md              ← 各模块工作流
+    ├── polish-prompts.md             ← 润色 Prompt 模板库
+    ├── domain-rules/                 ← 领域规则
+    └── journal-styles/               ← Nature/CNS 风格
 ```
-
----
-
-## 📚 知识来源
-
-paper-master v2 从以下开源项目中吸收了方法论精华：
-
-| 来源 | 认可度 | 吸收内容 |
-|------|--------|---------|
-| nature-style-writer | 855 downloads | Nature 7-Pass 编辑法 |
-| nature-figure | 975 downloads | 出版级图表规范、色盲配色 |
-| nature-paper-reviewer | ClawHub | Nature 审稿人 5 维评估框架 |
-| scicomp-research-skills | 8⭐ GitHub | 段落清晰度测试、反向大纲、对抗性自审 |
-| citation-verifier | 42 installs | DOI 验证、引用真实性检查 |
-| dissertation-workflow-core | 29 installs | 学位论文全流程 |
-| arxiv-translator | 426⭐ | 逐段翻译流程、术语维护 |
-| systematic-literature-review | 21 installs | PRISMA 文献筛选流程 |
-| awesome-latex-skills | 172⭐ | LaTeX 错误诊断速查表 |
-| AI-Research-SKILLs | 10.6K⭐ | ML 论文特有结构规范 |
-| paper-master-opt | 本地 | 歧义处理、检查点机制、换投路由 |
-
-> 完整发现报告见 `aha-skills-finder/runs/paper-writing-discovery/`
-
----
 
 ## 🔒 核心原则
 
-1. **不代写** — 提供建议和改进方案，不凭空生成内容
-2. **不编造** — 永不捏造引用、数据、实验结果
-3. **保留主导权** — 每个修改标注为 `[建议]`，用户确认后应用
+1. **不代写**（咨询模式）— 提供建议和改进方案，不凭空生成内容
+2. **不编造**（全模式）— 永不捏造引用、数据、实验结果；生成模式缺数据写 DATA_NEEDED
+3. **保留主导权** — 每个修改标注 `[建议]`，用户确认后应用（生成模式为显式开启的例外）
 4. **敏感内容保护** — `\cite{}`、`\ref{}`、数学环境、图表数据永不修改
-
----
-
-## 🛠️ 安装
-
-将 `paper-master/` 目录放在你的 skills 路径下即可。Agent 会根据 `SKILL.md` 中的触发条件自动激活。
-
----
+5. **引用真实** — 用 fetch_bib.py 获取，拉不到标 `[VERIFY]`
+6. **诚实核对** — 声称的性能必须有原始数据支撑
 
 ## 📄 License
 
