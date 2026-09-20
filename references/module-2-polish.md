@@ -84,6 +84,7 @@
 - 若 claim 无证据支撑 → **缩小到证据支持的范围**，或用同义词掩盖
 - 泛化性不足 → 明确 scope 边界，不写空泛免责
 - 真实局限集中在 Limitations 一节；正文删除「further research is needed」「may not generalize」等通用免责
+- 语义不丢：无证据反对时不删弱——`significant` 等统计/强度词保留原语义或标注待核验，不得以「锐化」名义降级
 
 ## 常见学术写作问题修正（吸收 nature-style-writer）
 
