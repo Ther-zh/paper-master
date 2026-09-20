@@ -1,9 +1,9 @@
-# 📝 paper-master v3
+# 📝 paper-master v3.1
 
 > 一站式学术论文全生命周期写作 Skill — 从研究证据到投稿，双模式（咨询 + 真实写作）
 
-[![Version](https://img.shields.io/badge/version-3.0-blue)]()
-[![Modules](https://img.shields.io/badge/modules-11-green)]()
+[![Version](https://img.shields.io/badge/version-3.1-blue)]()
+[![Modules](https://img.shields.io/badge/modules-13-green)]()
 [![Workflow](https://img.shields.io/badge/workflow-W0--W7-orange)]()
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)]()
 
@@ -33,9 +33,9 @@ W7 投稿 ← W6 适配润色 ← W5 审计(数值claim+引用) ←────�
 | `scripts/fetch_bib.py` | 真实 BibTeX 获取（DBLP→CrossRef）+ bib 卫生校验（死条目/元数据不一致） |
 | `scripts/check_tex.py` | 静态 LaTeX 健康检查（未闭合环境/未定义引用/重复label/定理一致性/写作残留/匿名泄漏） |
 
-## 🧩 11 大模块
+## 🧩 13 大模块
 
-| # | 模块 | v3 增强 |
+| # | 模块 | v3.1 增强 |
 |---|------|---------|
 | 1 | 结构策略 | Claims-Evidence Matrix + GAP_REPORT + DATA_NEEDED |
 | 2 | 段落润色 | Banana Rule 术语一致 + 数值/结论强度保护 |
@@ -48,6 +48,8 @@ W7 投稿 ← W6 适配润色 ← W5 审计(数值claim+引用) ←────�
 | 9 | 引用验证 | fetch_bib.py 真实获取链 + 引用上下文适切性审计 |
 | 10 | 学位论文 | 沿用 |
 | 11 | 论文翻译 | 沿用 |
+| 12 | 优秀论文对照学习 | 🆕 Oral 蒸馏七项做法 + archetype 指导 + 溯源纪律（快照 external-refs/oral-paper-skill） |
+| 13 | 防御性写作阻止 | 🆕 发布会原则 + 12 条规则 + 交稿前 8 问（快照 external-refs/anti-defensive-writing-Skill） |
 
 ## 🚀 快速开始
 
@@ -56,6 +58,8 @@ W7 投稿 ← W6 适配润色 ← W5 审计(数值claim+引用) ←────�
 帮我润色这段 Abstract
 投稿 Nature 前帮我挑毛病
 检查我的引用是否都真实存在
+对照优秀论文帮我找这篇最值得改进的 3 处
+这段结论写得心虚，按发布会原则帮我改
 
 # 生成模式
 基于 results/ 和我的实验记录写一篇 ICLR 论文
@@ -66,22 +70,25 @@ W7 投稿 ← W6 适配润色 ← W5 审计(数值claim+引用) ←────�
 
 ```
 paper-master/
-├── SKILL.md                          ← 主路由（双模式 + 11 模块 + 工作流）
+├── SKILL.md                          ← 主路由（双模式 + 13 模块 + 工作流）
 ├── README.md                         ← 本文件
 ├── scripts/
-│   ├── fetch_bib.py                  ← 🆕 真实 BibTeX 获取链
-│   └── check_tex.py                  ← 🆕 静态 LaTeX 健康检查
+│   ├── fetch_bib.py                  ← 真实 BibTeX 获取链
+│   └── check_tex.py                  ← 静态 LaTeX 健康检查
+├── external-refs/                    ← 🆕 外部仓库快照（上游溯源用，运行时无需读取）
+│   ├── oral-paper-skill/             ← 883 篇 Oral 摘要蒸馏全量语料（模块12 来源）
+│   └── anti-defensive-writing-Skill/ ← CN/EN 双版本（模块13 来源）
 └── references/
-    ├── workflow-W0-input.md          ← 🆕 生成模式输入契约
-    ├── workflow-W1-plan.md           ← 🆕 Claims-Evidence 规划 + GAP_REPORT
-    ├── workflow-W2-write.md          ← 🆕 受证据约束写作
-    ├── workflow-W4-compile.md        ← 🆕 编译校验 + 页数
-    ├── workflow-W5-audit.md          ← 🆕 数值 claim + 引用审计
-    ├── workflow-W6-adapt.md          ← 🆕 期刊适配 + 润色
-    ├── workflow-W7-submit.md         ← 🆕 投稿门禁
-    ├── edit-whitelist.md             ← 🆕 编辑白名单协议
-    ├── venue/ieee.md                 ← 🆕 IEEE 期刊/会议规范
-    ├── module-1..11*.md              ← 各模块工作流
+    ├── workflow-W0-input.md          ← 生成模式输入契约
+    ├── workflow-W1-plan.md           ← Claims-Evidence 规划 + GAP_REPORT
+    ├── workflow-W2-write.md          ← 受证据约束写作（含反防御性写作）
+    ├── workflow-W4-compile.md        ← 编译校验 + 页数
+    ├── workflow-W5-audit.md          ← 数值 claim + 引用审计
+    ├── workflow-W6-adapt.md          ← 期刊适配 + 润色 + 防防御复查
+    ├── workflow-W7-submit.md         ← 投稿门禁
+    ├── edit-whitelist.md             ← 编辑白名单协议
+    ├── venue/ieee.md                 ← IEEE 期刊/会议规范
+    ├── module-1..13*.md              ← 各模块工作流（12=Oral 对照学习，13=防防御性写作）
     ├── polish-prompts.md             ← 润色 Prompt 模板库
     ├── domain-rules/                 ← 领域规则
     └── journal-styles/               ← Nature/CNS 风格
@@ -95,6 +102,7 @@ paper-master/
 4. **敏感内容保护** — `\cite{}`、`\ref{}`、数学环境、图表数据永不修改
 5. **引用真实** — 用 fetch_bib.py 获取，拉不到标 `[VERIFY]`
 6. **诚实核对** — 声称的性能必须有原始数据支撑
+7. **反防御不越界**（🆕 v3.1）— 模块13 只调整叙事与措辞，不改变证据真值；必要局限如实保留
 
 ## 📄 License
 

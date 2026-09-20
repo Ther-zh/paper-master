@@ -78,3 +78,4 @@ Slot ID 格式：`GAP_<SECTION>_<FEATURE>`（全大写，稳定）。
 - → 模块4（期刊适配）：期刊风格影响结构
 - → 生成模式：产出 PAPER_PLAN.md 供 W2 写作使用（见 workflow-W1-plan.md）
 - → 模块9（引用验证）：Related Work 的引用需真实
+- → 模块12（优秀论文对照学习）：需要范例对照时先选做法 + exemplar，再落到结构槽位

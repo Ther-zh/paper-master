@@ -5,21 +5,27 @@ description: >-
   研究叙事输入契约、Claims-Evidence 规划、受证据约束的论文生成（真实写作）、
   出版级图表、LaTeX 编译校验、引用真实性获取（DBLP/CrossRef）、数值 claim 审计、
   段落润色（Nature 7-Pass）、审稿预检、期刊适配、去 AI 痕迹、Cover Letter、
-  文献调研、引用验证、学位论文、论文翻译。
+  文献调研、引用验证、学位论文、论文翻译、优秀论文对照学习（Oral 范例）、
+  防御性写作阻止。
   双模式：咨询模式（默认，给结构化建议）+ 生成模式（从 NARRATIVE_REPORT/证据真实写作）。
   当用户提到论文写作、写论文、论文生成、论文润色、LaTeX 论文、会议/期刊投稿、
   AAAI/ICML/NeurIPS/CVPR/IEEE/ACM/Nature/Science/Cell/PNAS、
   语法检查、学术写作、英文润色、去 AI 痕迹、AI 检测、humanize、
   审稿人视角、投稿前检查、cover letter、期刊风格适配、换投、
   文献综述、引用检查、引用验证、citation check、DOI验证、学位论文、
-  开题报告、盲审、答辩、论文翻译时激活本 Skill。
+  开题报告、盲审、答辩、论文翻译、对照优秀论文/Oral 范例学习、学习复盘、
+  防御性写作、自我削弱、发布会原则、不给审稿人递刀子、rebuttal 自查时激活本 Skill。
 ---
 
-# paper-master v3
+# paper-master v3.1
 
 一站式学术论文全生命周期写作 Skill。v3 从「纯咨询顾问」升级为「**真实写作引擎 + 全流程质检**」：
 既能对已有论文给出专家级建议，也能从研究证据生成一篇可以编译、通过审计的论文草稿。
 
+> **v3.1 更新**：
+> - 🆕 **模块扩至 13**：吸收外部 skill `oral-paper-skill`（883 篇 Oral 摘要蒸馏 → 模块12）与 `anti-defensive-writing`（发布会原则 → 模块13）
+> - 🆕 **external-refs/**：两个上游仓库快照入档，供溯源与深挖（能力已吸收进模块，运行时无需读取）
+>
 > **v3 更新**：
 > - 🆕 **双模式**：咨询模式（默认，建议式）+ 生成模式（真实写作）
 > - 🆕 **全生命周期工作流** W0→W7：输入契约 → 规划 → 生成 → 图表 → 编译 → 审计 → 适配 → 投稿
@@ -31,7 +37,7 @@ description: >-
 ## Quick Start
 
 1. 描述你的需求（如「帮我润色这段 Abstract」「投稿前帮我挑毛病」「帮我做文献调研」「检查引用是否真实」「**基于这份实验结果帮我写一篇论文**」）
-2. paper-master 自动判断模式并路由到对应模块（1~11）或全生命周期工作流
+2. paper-master 自动判断模式并路由到对应模块（1~13）或全生命周期工作流
 3. 按指引逐步完成，输出结构化结果
 
 ---
@@ -54,6 +60,7 @@ description: >-
   3. **引用必须真实**：优先用 `scripts/fetch_bib.py` 从 DBLP/CrossRef 拉取；拉不到标 `% [VERIFY]`
   4. **不生成作者身份**：用匿名 author 块（`Anonymous Submission`）
   5. 生成后必须运行 `scripts/check_tex.py` 自检
+  6. **写入时生效**：叙事立场（模块13）、七项做法（模块12）、venue 约束在 W1/W2 即执行；W4–W6 只兜底（见「写入时生效原则」表）
 
 ---
 
@@ -61,19 +68,19 @@ description: >-
 
 ```
 W0 输入契约 ──> W1 规划 ──> W2 生成 ──> W3 图表 ──> W4 编译校验
-   (NARRATIVE    (Claims-      (逐节 LaTeX    (可选)      (check_tex.py
-    _REPORT)     Evidence      写作 +         出图)        + latexmk)
-                 Matrix +      DATA_NEEDED)
-                 GAP_REPORT          │
-                                     ▼
+   (NARRATIVE    (策略卡+      (逐节 LaTeX    (可选)      (check_tex.py
+    _REPORT)     Claims-      写作 +         出图)        + latexmk)
+                 Evidence+    DATA_NEEDED)
+                 GAP)                 │
+                                      ▼
 W7 投稿 ──> W6 适配/润色 ──> W5 审计 ──────────────┘
-(Cover Letter) (期刊适配/去AI/润色)  (数值claim审计 + 引用审计)
+(Cover Letter) (期刊适配/去AI/润色/防御兜底)  (数值claim审计 + 引用审计)
 ```
 
 | 阶段 | 名称 | 关键动作 | 产出 |
 |------|------|---------|------|
 | W0 | 输入契约 | 读取/询问 NARRATIVE_REPORT、实验结果、证据文件 | `narrative.md`（缺失则引导生成）|
-| W1 | 规划 | Claims-Evidence Matrix + GAP_REPORT + 分节计划 | `PAPER_PLAN.md`、`GAP_REPORT.md` |
+| W1 | 规划 | 叙事策略卡（模块13 写入时）→ Claims-Evidence Matrix + 核心 claim 写法卡（模块12 写入时）→ GAP_REPORT + 分节计划 | `PAPER_PLAN.md`、`GAP_REPORT.md` |
 | W2 | 生成 | 逐节写作 LaTeX（受证据约束） | `paper/sections/*.tex`、`references.bib` |
 | W3 | 图表 | 数据驱动出图 + 规范检查（可选） | `paper/figures/*` |
 | W4 | 编译校验 | `check_tex.py` + latexmk 编译 + 页数校验 | `paper/main.pdf` |
@@ -83,9 +90,25 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 
 **各阶段详细指引**见 `references/workflow-W0-input.md`、`references/workflow-W1-plan.md`、`references/workflow-W2-write.md`、`references/workflow-W4-compile.md`、`references/workflow-W5-audit.md`。
 
+### 写入时生效原则（Born-Correct）
+
+**质检是安全网，不是主要执行点。** 每条原则必须在 W0–W2 有「写入时对应物」；W4–W6 只做兜底复核：
+
+| 原则 | 写入时落点（主） | 检查网（兜底） |
+|------|----------------|---------------|
+| 证据约束（不编造） | W0 输入契约铁律 · W1 Claims-Evidence / GAP | W4 DATA_NEEDED 残留 · W5 数值审计 |
+| 叙事立场/反防御（模块13） | W1 叙事策略卡（选优势/选比赛/实验职责/重构检查）· W2 发布会开场 + 禁用表达 | W6 Step4 防御复查 |
+| 七项做法（模块12） | W1 核心 claim 写法卡（张力/增量/证据匹配/比较/条件）· W2 措辞 | 模块12 专项对照（按需） |
+| 引用真实 | W2 写作时即用 fetch_bib.py 取真引用 | W5 引用审计 |
+| 去 AI 痕迹 | W2 写作即规避指纹词 | W6 Step3 |
+| venue 风格与页数 | W0 收集 · W1 结构预算（模块4）· W2 写作约定 | W4 页数校验 · W6 风格适配 |
+| 匿名合规 | W2 匿名块硬规则 | W4 泄漏检查 · W7 门禁 |
+
+**管线缺陷判据**：若某原则只在 W4–W6 出现、没有写入时落点，视为管线缺陷 → 补进 W1/W2，而不是加检查。
+
 ---
 
-## 🧩 11 大模块与路由规则
+## 🧩 13 大模块与路由规则
 
 | 模块 | 触发关键词 | 优先级 | v3 增强 |
 |------|-----------|--------|---------|
@@ -100,14 +123,18 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | [模块9：引用验证](references/module-9-citation-check.md) | 引用检查/DOI验证/BibTeX/citation | P2 | 🆕 `fetch_bib.py` 真实获取链 + 引用上下文适切性审计 |
 | [模块10：学位论文](references/module-10-thesis.md) | 学位论文/硕博/thesis/开题/盲审 | P2 | 沿用 |
 | [模块11：论文翻译](references/module-11-translation.md) | 翻译/中译英/英译中/translate | P3 | 沿用 |
+| [模块12：优秀论文对照学习](references/module-12-oral-learning.md) | 对照优秀论文/Oral/范例/exemplar/学习复盘/可改进点 | P2 | 🆕 七项做法 + 六类 archetype + 溯源纪律（摘要级证据） |
+| [模块13：防御性写作阻止](references/module-13-anti-defensive.md) | 防御性写作/自我削弱/心虚/发布会/rebuttal自查/压缩论文 | P2 | 🆕 发布会原则 + 叙事/语言/实验/结构规则 + 交稿前 8 问 |
 
-**默认组合路由**：结构策略 → 段落润色 → LaTeX精修 → 去AI痕迹 → 审稿预检 → 期刊适配 → Cover Letter
+**默认组合路由**：结构策略 → 段落润色 → 防御性写作检查（模块13）→ LaTeX精修 → 去AI痕迹 → 审稿预检 → 期刊适配 → Cover Letter
 
 **换投路由**：期刊适配（先分析新目标）→ 段落润色（适配新风格）→ LaTeX精修（调整模板）→ 审稿预检
 
 **学位论文路由**：结构策略 → 文献调研 → 逐章写作（→段落润色→LaTeX精修→引用验证循环）→ 盲审检查
 
-**🆕 生成路由**（检测到生成意图）：W0 输入契约 → W1 规划 → W2 生成 → W4 编译校验 → W5 审计 → W6 适配
+**🆕 优秀论文学习路由**：模块12（选范例 + 七项做法）→ 模块1（落到结构/GAP）→ 模块2（落到文字）→ 模块13（主张强度复核）
+
+**🆕 生成路由**（检测到生成意图）：W0 输入契约 → W1 规划（叙事策略卡 + claim 写法卡）→ W2 生成（写作时同步执行）→ W4 编译校验 → W5 审计 → W6 适配（W4–W6 为兜底检查网）
 
 ---
 
@@ -176,6 +203,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 4. **敏感内容保护**：`\cite{}`、`\ref{}`、数学环境、图表数据永不修改；生成/修改遵循编辑白名单
 5. **引用真实**：需要引用时用 `fetch_bib.py` 获取，拉不到标 `[VERIFY]`，绝不幻觉
 6. **诚实核对**：声称的性能必须有原始数据支撑；未经审计的数字 claim 不得写入摘要/引言
+7. **反防御不越界**：模块13 发布会原则只调整叙事与措辞，不改变证据真值；主张必须有证据支撑，必要局限如实保留
 
 ---
 
@@ -203,6 +231,9 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | [module-9-citation-check.md](references/module-9-citation-check.md) | 引用验证与格式化 |
 | [module-10-thesis.md](references/module-10-thesis.md) | 学位论文写作 |
 | [module-11-translation.md](references/module-11-translation.md) | 论文翻译 |
+| [module-12-oral-learning.md](references/module-12-oral-learning.md) | 🆕 优秀论文对照学习（Oral 蒸馏七项做法） |
+| [module-13-anti-defensive.md](references/module-13-anti-defensive.md) | 🆕 防御性写作阻止（发布会原则） |
+| [external-refs/](external-refs/) | 🆕 外部仓库快照（oral-paper-skill / anti-defensive-writing-Skill） |
 | [polish-prompts.md](references/polish-prompts.md) | 段落润色 Prompt 模板库 |
 | [domain-rules/ml-cv-nlp.md](references/domain-rules/ml-cv-nlp.md) | ML/CV/NLP 领域规则 |
 | [domain-rules/cs-engineering.md](references/domain-rules/cs-engineering.md) | CS 工程类论文规则 |

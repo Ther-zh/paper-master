@@ -157,4 +157,5 @@ Claim: "This is the first work to..."
 
 - → 模块9（引用验证）：引用问题作为审稿预检的一部分
 - → 模块2（段落润色）：发现写作问题后调用润色
+- → 模块13（防御性写作阻止）：本模块找问题，模块13 防自伤（交稿前 8 问自查，与对抗性自审互补）
 - → [journal-styles/nature-cns.md](journal-styles/nature-cns.md)：Nature 审稿视角参考

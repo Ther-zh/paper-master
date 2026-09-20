@@ -152,4 +152,5 @@
 
 - → 模块11（翻译）：中译英后自动调用润色
 - → 模块6（去AI痕迹）：润色后检查 AI 指纹词
+- → 模块13（防御性写作阻止）：润色时同步扫描自我削弱表达，主张强度按发布会原则校准（不占优结果不说输）
 - → [journal-styles/nature-cns.md](journal-styles/nature-cns.md)：Nature 风格参考
