@@ -17,11 +17,17 @@ description: >-
   防御性写作、自我削弱、发布会原则、不给审稿人递刀子、rebuttal 自查时激活本 Skill。
 ---
 
-# paper-master v3.1
+# paper-master v3.2
 
 一站式学术论文全生命周期写作 Skill。v3 从「纯咨询顾问」升级为「**真实写作引擎 + 全流程质检**」：
 既能对已有论文给出专家级建议，也能从研究证据生成一篇可以编译、通过审计的论文草稿。
 
+> **v3.2 更新**：
+> - 🆕 **三类账本**（机制注册表 / 术语账本 / 设计-实现差异台账，见 `references/ledgers.md`）：W1 生成 → W2 执行 → W5 抽查
+> - 🆕 **core 机制六槽展开卡**：动机 / 定义 / 触发与落点 / 输入产物与作用域 / 关键参数与判据 + 替代方案 / 验证与消融角色（Slow/Meta 教训）
+> - 🆕 **W5 升级九类审计**（+图内文字失配、+自由参数敏感性缺失）+ 一致性审计 C（机制覆盖 / 图文码 / 术语 / 设计-实现）
+> - 🆕 **比较 claim 必答自由参数敏感性**（λ 翻转点教训）；图内文字与正文同取术语账本
+>
 > **v3.1 更新**：
 > - 🆕 **模块扩至 13**：吸收外部 skill `oral-paper-skill`（883 篇 Oral 摘要蒸馏 → 模块12）与 `anti-defensive-writing`（发布会原则 → 模块13）
 > - 🆕 **external-refs/**：两个上游仓库快照入档，供溯源与深挖（能力已吸收进模块，运行时无需读取）
@@ -31,7 +37,7 @@ description: >-
 > - 🆕 **全生命周期工作流** W0→W7：输入契约 → 规划 → 生成 → 图表 → 编译 → 审计 → 适配 → 投稿
 > - 🆕 **证据约束机制**：Claims-Evidence Matrix、GAP_REPORT、DATA_NEEDED 占位（绝不编造）
 > - 🆕 **可执行脚本**：`scripts/fetch_bib.py`（真实 BibTeX 获取链）、`scripts/check_tex.py`（静态健康检查）
-> - 🆕 **数值 claim 审计**：七类数据错误检测（数值夸大/择优seed/配置不一致/聚合错误等）
+> - 🆕 **数值 claim 审计**：九类数据错误检测（数值夸大/择优seed/配置不一致/聚合错误/图内文字失配/自由参数敏感性缺失等）
 > - 🆕 **编辑白名单**：修改边界硬约束（保护 cite/ref/定理/数字）
 
 ## Quick Start
@@ -80,11 +86,11 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | 阶段 | 名称 | 关键动作 | 产出 |
 |------|------|---------|------|
 | W0 | 输入契约 | 读取/询问 NARRATIVE_REPORT、实验结果、证据文件 | `narrative.md`（缺失则引导生成）|
-| W1 | 规划 | 叙事策略卡（模块13 写入时）→ Claims-Evidence Matrix + 核心 claim 写法卡（模块12 写入时）→ GAP_REPORT + 分节计划 | `PAPER_PLAN.md`、`GAP_REPORT.md` |
+| W1 | 规划 | 叙事策略卡（模块13 写入时）→ **机制注册表 + 术语账本 + 设计-实现台账** → Claims-Evidence Matrix + 核心 claim 写法卡（模块12 写入时）→ GAP_REPORT + 分节计划 | `PAPER_PLAN.md`、`GAP_REPORT.md` |
 | W2 | 生成 | 逐节写作 LaTeX（受证据约束） | `paper/sections/*.tex`、`references.bib` |
-| W3 | 图表 | 数据驱动出图 + 规范检查（可选） | `paper/figures/*` |
+| W3 | 图表 | 数据驱动出图 + 规范检查（可选；架构/流程类走 `academic-svg-figure`，可编辑 SVG） | `paper/figures/*` |
 | W4 | 编译校验 | `check_tex.py` + latexmk 编译 + 页数校验 | `paper/main.pdf` |
-| W5 | 审计 | 数值 claim 审计 + 引用真实性/上下文审计 | 审计报告 |
+| W5 | 审计 | 数值 claim 审计（九类，含图内文字）+ 引用真实性/上下文审计 + 一致性审计（机制覆盖/图文码/术语/设计-实现/敏感性） | 审计报告 |
 | W6 | 适配润色 | 期刊风格适配 + 7-Pass 润色 + 去AI | 修订稿 |
 | W7 | 投稿 | Cover Letter、合规检查 | 投稿材料 |
 
@@ -103,6 +109,10 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | 去 AI 痕迹 | W2 写作即规避指纹词 | W6 Step3 |
 | venue 风格与页数 | W0 收集 · W1 结构预算（模块4）· W2 写作约定 | W4 页数校验 · W6 风格适配 |
 | 匿名合规 | W2 匿名块硬规则 | W4 泄漏检查 · W7 门禁 |
+| 机制覆盖（不遗漏、不一句带过） | W1 机制注册表（core 六槽）· W2 逐槽写作 | W5 C1 覆盖审计 |
+| 术语一致（含图内文字） | W1 术语账本 · W2 账本取词（复制不重打） | W5 C3 漂移扫描 |
+| 实现-声明一致 | W1 设计-实现台账 · W2 对齐（unknown 不写成已实现） | W5 C4 锚点核对 |
+| 比较敏感性 | W1 写法卡「自由参数与敏感性」列 · W2 限缩措辞 | W5 C5 / 第 9 类数据错误 |
 
 **管线缺陷判据**：若某原则只在 W4–W6 出现、没有写入时落点，视为管线缺陷 → 补进 W1/W2，而不是加检查。
 
@@ -113,10 +123,10 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | 模块 | 触发关键词 | 优先级 | v3 增强 |
 |------|-----------|--------|---------|
 | [模块1：结构策略](references/module-1-structure.md) | 结构/逻辑/IMRAD/规划/大纲 | P2 | 🆕 Claims-Evidence Matrix + GAP_REPORT + DATA_NEEDED |
-| [模块2：段落润色](references/module-2-polish.md) | 润色/改写/paraphrase/polish/proofread | P1 | 🆕 Banana Rule 术语一致 + 数值/结论强度保护 |
+| [模块2：段落润色](references/module-2-polish.md) | 润色/改写/paraphrase/polish/proofread | P1 | 🆕 Banana Rule 术语一致（术语账本为真源）+ 数值/结论强度保护 |
 | [模块3：LaTeX精修](references/module-3-latex.md) | LaTeX/编译/格式/图表/figure/table | P1 | 🆕 `check_tex.py` 静态体检 + 页数/溢出校验 + 定理一致性 |
 | [模块4：期刊适配](references/module-4-journal.md) | 适配/风格/目标期刊/换投 | P2 | 🆕 IEEE 规范 + 系统论文蓝图（venue/ieee.md）|
-| [模块5：审稿预检](references/module-5-audit.md) | 审稿/挑毛病/投稿前/audit/review | P3 | 🆕 七类数值 claim 审计 + 编辑白名单 + 跨模型独立性原则 |
+| [模块5：审稿预检](references/module-5-audit.md) | 审稿/挑毛病/投稿前/audit/review | P3 | 🆕 九类数值 claim 审计 + 一致性审计（机制覆盖/图文码/术语/敏感性）+ 编辑白名单 + 跨模型独立性原则 |
 | [模块6：去AI痕迹](references/module-6-deai.md) | 去AI/AI痕迹/humanize | P3 | 沿用 |
 | [模块7：Cover Letter](references/module-7-cover-letter.md) | cover letter/投稿信 | P3 | 沿用 |
 | [模块8：文献调研](references/module-8-lit-review.md) | 文献调研/综述/survey/SLR/PRISMA | P2 | 沿用 |
@@ -134,7 +144,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 
 **🆕 优秀论文学习路由**：模块12（选范例 + 七项做法）→ 模块1（落到结构/GAP）→ 模块2（落到文字）→ 模块13（主张强度复核）
 
-**🆕 生成路由**（检测到生成意图）：W0 输入契约 → W1 规划（叙事策略卡 + claim 写法卡）→ W2 生成（写作时同步执行）→ W4 编译校验 → W5 审计 → W6 适配（W4–W6 为兜底检查网）
+**🆕 生成路由**（检测到生成意图）：W0 输入契约 → W1 规划（叙事策略卡 + 机制/术语账本 + claim 写法卡）→ W2 生成（写作时同步执行）→ W4 编译校验 → W5 审计（九类 + 一致性审计）→ W6 适配（W4–W6 为兜底检查网）
 
 ---
 
@@ -178,6 +188,12 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 
 **硬规则**：缺口就是缺口，**绝不推断/填充/编造证据**；写作时对 missing 槽位输出 `<!-- DATA_NEEDED: GAP_S4_ABLATION — 需补充消融实验数据 -->` 占位。
 
+### 三类账本（v3.2，Born-Correct）
+
+机制注册表 / 术语账本 / 设计-实现差异台账：**W1 生成 → W2 执行 → W5 抽查**，
+防止机制漏写、术语漂移与"设计写了代码没接"被写成已实现。
+完整规范与表模板见 **[references/ledgers.md](references/ledgers.md)**。
+
 ### 编辑白名单（Edit Whitelist）
 
 审稿修改/换投/生成修订时，可用 YAML 限制可改路径与操作，防止偷偷新增 `\cite`、定理、数字。**协议见 [references/edit-whitelist.md](references/edit-whitelist.md)。**
@@ -212,12 +228,13 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | 文档 | 内容 |
 |------|------|
 | [workflow-W0-input.md](references/workflow-W0-input.md) | 🆕 生成模式输入契约 |
-| [workflow-W1-plan.md](references/workflow-W1-plan.md) | 🆕 Claims-Evidence 规划 + GAP_REPORT |
-| [workflow-W2-write.md](references/workflow-W2-write.md) | 🆕 受证据约束的逐节写作 |
+| [workflow-W1-plan.md](references/workflow-W1-plan.md) | 🆕 Claims-Evidence 规划 + GAP_REPORT + 机制/术语账本（Step 0.5） |
+| [workflow-W2-write.md](references/workflow-W2-write.md) | 🆕 受证据约束的逐节写作 + 六槽展开/账本取词 |
 | [workflow-W4-compile.md](references/workflow-W4-compile.md) | 🆕 编译校验 + 页数检查 |
-| [workflow-W5-audit.md](references/workflow-W5-audit.md) | 🆕 数值 claim 审计 + 引用审计 |
+| [workflow-W5-audit.md](references/workflow-W5-audit.md) | 🆕 数值 claim 审计（九类）+ 引用审计 + 一致性审计 C |
 | [workflow-W6-adapt.md](references/workflow-W6-adapt.md) | 🆕 期刊适配 + 润色 + 去 AI |
 | [workflow-W7-submit.md](references/workflow-W7-submit.md) | 🆕 Cover Letter + 投稿门禁 |
+| [ledgers.md](references/ledgers.md) | 🆕 三类账本：机制注册表 / 术语账本 / 设计-实现差异台账 |
 | [edit-whitelist.md](references/edit-whitelist.md) | 🆕 编辑白名单协议 |
 | [venue/ieee.md](references/venue/ieee.md) | 🆕 IEEE 期刊/会议规范 |
 | [module-1-structure.md](references/module-1-structure.md) | 结构策略工作流 |

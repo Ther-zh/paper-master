@@ -78,6 +78,7 @@
 - 校验 Results/Discussion/Tables/captions 使用**完全相同的术语**
 - 标记任何对已定义术语的同义替换
 - 缩写首次使用必须定义
+- **真源 = W1 术语账本**（replace 词不得出现、define_once 词首现定义；图注/图内文字同表，见 [ledgers.md](ledgers.md)）
 
 **结论强度校准（CONFIDENT PROSE, HONEST LIMITS）**：
 - 证据只支持 suggest/indicate → 不得写 prove/demonstrate

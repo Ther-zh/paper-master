@@ -1,8 +1,8 @@
-# 📝 paper-master v3.1
+# 📝 paper-master v3.2
 
 > 一站式学术论文全生命周期写作 Skill — 从研究证据到投稿，双模式（咨询 + 真实写作）
 
-[![Version](https://img.shields.io/badge/version-3.1-blue)]()
+[![Version](https://img.shields.io/badge/version-3.2-blue)]()
 [![Modules](https://img.shields.io/badge/modules-13-green)]()
 [![Workflow](https://img.shields.io/badge/workflow-W0--W7-orange)]()
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)]()
@@ -21,9 +21,9 @@ paper-master v3 是面向 AI Agent（opencode / Claude Code / Codex / Cursor）�
 ## 🔄 全生命周期工作流
 
 ```
-W0 输入契约 → W1 规划(Claims-Evidence+GAP) → W2 生成 → W3 图表 → W4 编译校验
+W0 输入契约 → W1 规划(账本+Claims-Evidence+GAP) → W2 生成 → W3 图表 → W4 编译校验
                                                               ↓
-W7 投稿 ← W6 适配润色 ← W5 审计(数值claim+引用) ←──────────────┘
+W7 投稿 ← W6 适配润色 ← W5 审计(九类数值claim+引用+一致性) ←──┘
 ```
 
 ## 🛠️ 可执行脚本（v3 新增）
@@ -35,13 +35,13 @@ W7 投稿 ← W6 适配润色 ← W5 审计(数值claim+引用) ←────�
 
 ## 🧩 13 大模块
 
-| # | 模块 | v3.1 增强 |
+| # | 模块 | v3.2 增强 |
 |---|------|---------|
 | 1 | 结构策略 | Claims-Evidence Matrix + GAP_REPORT + DATA_NEEDED |
-| 2 | 段落润色 | Banana Rule 术语一致 + 数值/结论强度保护 |
+| 2 | 段落润色 | Banana Rule 术语一致（术语账本为真源）+ 数值/结论强度保护 |
 | 3 | LaTeX 精修 | check_tex.py 静态体检 + 页数/溢出校验 + 定理一致性 |
 | 4 | 期刊适配 | IEEE 专项规范 + 系统论文蓝图 |
-| 5 | 审稿预检 | 七类数值 claim 审计 + 编辑白名单 + 跨模型独立性 |
+| 5 | 审稿预检 | 🆕 九类数值 claim 审计 + 一致性审计（机制覆盖/图文码/术语/设计-实现/敏感性）+ 编辑白名单 + 跨模型独立性 |
 | 6 | 去 AI 痕迹 | 沿用 |
 | 7 | Cover Letter | 沿用 |
 | 8 | 文献调研 | 沿用 |
@@ -80,12 +80,13 @@ paper-master/
 │   └── anti-defensive-writing-Skill/ ← CN/EN 双版本（模块13 来源）
 └── references/
     ├── workflow-W0-input.md          ← 生成模式输入契约
-    ├── workflow-W1-plan.md           ← Claims-Evidence 规划 + GAP_REPORT
+    ├── workflow-W1-plan.md           ← 账本 + Claims-Evidence 规划 + GAP_REPORT
     ├── workflow-W2-write.md          ← 受证据约束写作（含反防御性写作）
     ├── workflow-W4-compile.md        ← 编译校验 + 页数
-    ├── workflow-W5-audit.md          ← 数值 claim + 引用审计
+    ├── workflow-W5-audit.md          ← 九类数值 claim + 引用 + 一致性审计
     ├── workflow-W6-adapt.md          ← 期刊适配 + 润色 + 防防御复查
     ├── workflow-W7-submit.md         ← 投稿门禁
+    ├── ledgers.md                    ← 🆕 三类账本（机制注册表/术语账本/设计-实现差异）
     ├── edit-whitelist.md             ← 编辑白名单协议
     ├── venue/ieee.md                 ← IEEE 期刊/会议规范
     ├── module-1..13*.md              ← 各模块工作流（12=Oral 对照学习，13=防防御性写作）
@@ -103,6 +104,7 @@ paper-master/
 5. **引用真实** — 用 fetch_bib.py 获取，拉不到标 `[VERIFY]`
 6. **诚实核对** — 声称的性能必须有原始数据支撑
 7. **反防御不越界**（🆕 v3.1）— 模块13 只调整叙事与措辞，不改变证据真值；必要局限如实保留
+8. **账本诚实**（🆕 v3.2）— 机制/术语/实现状态有账可查；`unknown` 不写成已实现，图内文字与正文同取账本
 
 ## 📄 License
 

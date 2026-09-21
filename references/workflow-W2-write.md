@@ -10,12 +10,20 @@
 4. **诚实限制**：泛化性不足就写明 scope；真实局限写进 Limitations，不写空泛免责
 5. **缺数据用占位**：对 GAP_REPORT 里的 missing 槽位，写 `<!-- DATA_NEEDED: GAP_S4_ABLATION — 需补充消融实验 -->`，绝不虚构数字
 6. **按写法卡措辞**：按 W1 核心 claim 写法卡写——张力真实、贡献增量去掉方法名仍可说清、比较口径明确、适用条件不省略（模块12 七项做法写入时生效）
+7. **core 机制逐槽展开（v3.2）**：按 W1 机制注册表六槽展开卡写——动机 / 定义 / 触发与落点 /
+   输入产物与作用域 / 关键参数与判据 + 替代方案 / 验证与消融角色；禁止"采用 X 算法求解"式
+   一句带过。supporting 可一段，baseline 可表内一句（简写合法）。
+8. **账本取词（v3.2）**：正文、图注与图内文字用词直接取自术语账本（**复制不重打**）；
+   提及实现状态的句子与设计-实现台账一致——`unknown` 只能写"设计为…"，不得写成"we implement/我们实现了"。
+9. **自由参数（v3.2）**：涉及自由参数/阈值/权重/选取规则的比较 claim，按 W1 写法卡给
+   敏感性或翻转点；给不出就在正文限缩措辞（不得延伸到正式口径之外）。
 
 ## 分节写作顺序
 
 建议按依赖顺序，避免写废：
 
-1. **方法 (Method)** — 最确定，先写（也最容易被复现审查）
+1. **方法 (Method)** — 最确定，先写（也最容易被复现审查）；写作前先过机制注册表：
+   core 机制按六槽展开，supporting 一段，baseline 表内一句
 2. **实验 (Experiments)** — 用证据文件填充
 3. **相关工作 (Related Work)** — 真实引用（用 fetch_bib.py）
 4. **引言 (Introduction)** — 从宽到窄漏斗，front-load contribution
@@ -27,7 +35,7 @@
 - **Pass 1 Clutter**：删 `due to the fact that` → `because`、`it is worth noting that` → 删除
 - **Pass 2 Active**：被动转主动（`It was observed` → `We observed`）；方法/既定事实处被动可保留
 - **Pass 3 Architecture**：>40 词长句拆分；主题句先行；句子开头多样化
-- **Pass 4 Banana Rule**：同一概念全文用同一术语，不玩同义替换（obese group 不许变 heavier group）；缩写首次定义
+- **Pass 4 Banana Rule**：同一概念全文用同一术语，不玩同义替换（obese group 不许变 heavier group）；缩写首次定义；判据来源 = W1 术语账本（replace 词不得出现、define_once 词首现定义，图注/图内文字同表）
 - **Pass 5 Numeric/Citation Integrity**：摘要的 N 与 Table 1 一致；百分数与原始数据一致；图与表一致
 
 ## 引用纪律
