@@ -2,6 +2,26 @@
 
 > 投稿前最后一关。确保论文「说的和证据一致」。
 
+## W5.0 审稿证据阶段（先取证，再评审）
+
+深度审稿 / 审稿意见回复 / 高风险论文先跑：
+
+```bash
+python scripts/evidence_scaffold.py --out review_evidence \
+  --title "Paper Title" --cutoff 2025-01-01 --venue NeurIPS
+```
+
+1. 确定 `cutoff_date`（论文首次公开/投稿日期）。
+2. 产出 `EVIDENCE_FACTS.md`（claims/method/evidence/datasets/metrics）。
+3. 产出 `DOMAIN_NARRATIVE.md`（演进弧 + open problems + significance criteria）。
+4. 产出 `BASELINE_GAP.md`（漏引 baseline/dataset，逐条带 reference + URL + compared）。
+5. 产出 `CLAIM_INTERROGATION.md`（每个 major claim：novelty Q 搜索接地 + soundness Q 原文引证）。
+
+**硬规则**：novelty 检索只用 ≤ cutoff_date 的工作；来源限顶会/顶刊 + arXiv；
+每条外部证据必须有 URL/DOI/arXiv ID；“没搜到”写 `not_found`，不写“不存在”。
+完整 prompt/schema/预算见 [module-5-evidence.md](module-5-evidence.md)。
+模块 5 的深度评审报告若没有以上四份产物，只能标 `review_mode: quick`。
+
 ## A. 数值 Claim 审计（Paper-to-Evidence Fidelity）
 
 目的：每个数字/比较/范围声明都能追溯回原始结果文件。
@@ -69,7 +89,8 @@
 
 ## D. 综合 Verdict
 
-- **PASS**：无 ERROR，所有 claim 有证据，引用真实且语境合适，一致性审计 C 无遗留项
+- **PASS**：无 ERROR，所有 claim 有证据，引用真实且语境合适，一致性审计 C 无遗留项；
+  深度审稿还要求 W5.0 四份证据产物存在且无未解释的 `BASELINE_GAP` / `CLAIM_INTERROGATION` 项
 - **WARN**：有需修正项但可投稿前修复
 - **FAIL**：有造假/夸大/幻觉 → 必须修复才能投
 

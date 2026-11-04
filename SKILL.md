@@ -17,11 +17,18 @@ description: >-
   防御性写作、自我削弱、发布会原则、不给审稿人递刀子、rebuttal 自查时激活本 Skill。
 ---
 
-# paper-master v3.2
+# paper-master v3.3
 
 一站式学术论文全生命周期写作 Skill。v3 从「纯咨询顾问」升级为「**真实写作引擎 + 全流程质检**」：
 既能对已有论文给出专家级建议，也能从研究证据生成一篇可以编译、通过审计的论文草稿。
 
+> **v3.3 更新**：
+> - 🆕 **审稿证据阶段**（吸收 ScholarPeer）：事实表 → 领域叙事 → 漏引 baseline scout →
+>   逐 claim novelty/soundness Q&A；novelty 检索强制 `cutoff_date`，来源限顶会/顶刊 + arXiv
+> - 🆕 **W5.0 四份产物**：`EVIDENCE_FACTS.md` / `DOMAIN_NARRATIVE.md` / `BASELINE_GAP.md` /
+>   `CLAIM_INTERROGATION.md`；深度审稿报告无产物只能标 `review_mode: quick`
+> - 完整协议见 [references/module-5-evidence.md](references/module-5-evidence.md)
+>
 > **v3.2 更新**：
 > - 🆕 **三类账本**（机制注册表 / 术语账本 / 设计-实现差异台账，见 `references/ledgers.md`）：W1 生成 → W2 执行 → W5 抽查
 > - 🆕 **core 机制六槽展开卡**：动机 / 定义 / 触发与落点 / 输入产物与作用域 / 关键参数与判据 + 替代方案 / 验证与消融角色（Slow/Meta 教训）
@@ -90,7 +97,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | W2 | 生成 | 逐节写作 LaTeX（受证据约束） | `paper/sections/*.tex`、`references.bib` |
 | W3 | 图表 | 数据驱动出图 + 规范检查（可选；架构/流程类走 `academic-svg-figure`，可编辑 SVG） | `paper/figures/*` |
 | W4 | 编译校验 | `check_tex.py` + latexmk 编译 + 页数校验 | `paper/main.pdf` |
-| W5 | 审计 | 数值 claim 审计（九类，含图内文字）+ 引用真实性/上下文审计 + 一致性审计（机制覆盖/图文码/术语/设计-实现/敏感性） | 审计报告 |
+| W5 | 审计 | **W5.0 证据阶段**（事实表/领域叙事/漏引 baseline/逐 claim Q&A，cutoff 硬边界）+ 数值 claim 审计（九类，含图内文字）+ 引用真实性/上下文审计 + 一致性审计（机制覆盖/图文码/术语/设计-实现/敏感性） | 审计报告 + 四份证据产物 |
 | W6 | 适配润色 | 期刊风格适配 + 7-Pass 润色 + 去AI | 修订稿 |
 | W7 | 投稿 | Cover Letter、合规检查 | 投稿材料 |
 
@@ -106,6 +113,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | 叙事立场/反防御（模块13） | W1 叙事策略卡（选优势/选比赛/实验职责/重构检查）· W2 发布会开场 + 禁用表达 | W6 Step4 防御复查 |
 | 七项做法（模块12） | W1 核心 claim 写法卡（张力/增量/证据匹配/比较/条件）· W2 措辞 | 模块12 专项对照（按需） |
 | 引用真实 | W2 写作时即用 fetch_bib.py 取真引用 | W5 引用审计 |
+| 外部语境/漏引 baseline | W1 相关工作报告领域叙事 + 候选 baseline；W2 不写“首次/首个”除非有检索支撑 | W5.0 baseline scout / claim Q&A |
 | 去 AI 痕迹 | W2 写作即规避指纹词 | W6 Step3 |
 | venue 风格与页数 | W0 收集 · W1 结构预算（模块4）· W2 写作约定 | W4 页数校验 · W6 风格适配 |
 | 匿名合规 | W2 匿名块硬规则 | W4 泄漏检查 · W7 门禁 |
@@ -118,7 +126,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 
 ---
 
-## 🧩 13 大模块与路由规则
+## 🧩 13 大模块 + 5.0 证据子模块与路由规则
 
 | 模块 | 触发关键词 | 优先级 | v3 增强 |
 |------|-----------|--------|---------|
@@ -127,6 +135,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | [模块3：LaTeX精修](references/module-3-latex.md) | LaTeX/编译/格式/图表/figure/table | P1 | 🆕 `check_tex.py` 静态体检 + 页数/溢出校验 + 定理一致性 |
 | [模块4：期刊适配](references/module-4-journal.md) | 适配/风格/目标期刊/换投 | P2 | 🆕 IEEE 规范 + 系统论文蓝图（venue/ieee.md）|
 | [模块5：审稿预检](references/module-5-audit.md) | 审稿/挑毛病/投稿前/audit/review | P3 | 🆕 九类数值 claim 审计 + 一致性审计（机制覆盖/图文码/术语/敏感性）+ 编辑白名单 + 跨模型独立性原则 |
+| [模块5.0：审稿证据](references/module-5-evidence.md) | 深度审稿/预答辩/reviewer 回复/漏引 baseline | P3 | 🆕 事实表 + 领域叙事 + baseline scout + 逐 claim novelty/soundness Q&A + `cutoff_date` 硬边界 |
 | [模块6：去AI痕迹](references/module-6-deai.md) | 去AI/AI痕迹/humanize | P3 | 沿用 |
 | [模块7：Cover Letter](references/module-7-cover-letter.md) | cover letter/投稿信 | P3 | 沿用 |
 | [模块8：文献调研](references/module-8-lit-review.md) | 文献调研/综述/survey/SLR/PRISMA | P2 | 沿用 |
@@ -206,6 +215,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 |------|------|---------|
 | `scripts/fetch_bib.py` | 真实 BibTeX 获取（DBLP→CrossRef）+ bib 卫生校验 | `python scripts/fetch_bib.py fetch "attention is all you need" --author Vaswani --key vaswani2017` / `... clean main.tex references.bib` |
 | `scripts/check_tex.py` | 静态 LaTeX 健康检查（未闭合环境/未定义引用/重复label/定理一致性/写作残留/匿名泄漏） | `python scripts/check_tex.py paper/` |
+| `scripts/evidence_scaffold.py` | 生成 W5.0 四份证据产物骨架（事实表/领域叙事/baseline gap/claim Q&A） | `python scripts/evidence_scaffold.py --out review_evidence --title "..." --cutoff 2025-01-01 --venue NeurIPS` |
 
 > 首次使用前确认：`python scripts/fetch_bib.py search "test"` 能联网（需可访问 dblp.org / doi.org）。
 
@@ -220,6 +230,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 5. **引用真实**：需要引用时用 `fetch_bib.py` 获取，拉不到标 `[VERIFY]`，绝不幻觉
 6. **诚实核对**：声称的性能必须有原始数据支撑；未经审计的数字 claim 不得写入摘要/引言
 7. **反防御不越界**：模块13 发布会原则只调整叙事与措辞，不改变证据真值；主张必须有证据支撑，必要局限如实保留
+8. **审稿先取证**：深度审稿先跑 W5.0（事实表/领域叙事/baseline gap/claim Q&A）；novelty 检索限定 `cutoff_date`；每条 Critical/Major 必须能指回证据产物
 
 ---
 
@@ -242,6 +253,7 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | [module-3-latex.md](references/module-3-latex.md) | LaTeX 精修工作流 |
 | [module-4-journal.md](references/module-4-journal.md) | 期刊适配工作流 |
 | [module-5-audit.md](references/module-5-audit.md) | 审稿预检工作流 |
+| [module-5-evidence.md](references/module-5-evidence.md) | 🆕 审稿证据阶段：事实表/领域叙事/baseline scout/claim Q&A/cutoff |
 | [module-6-deai.md](references/module-6-deai.md) | 去 AI 痕迹工作流 |
 | [module-7-cover-letter.md](references/module-7-cover-letter.md) | Cover Letter 工作流 |
 | [module-8-lit-review.md](references/module-8-lit-review.md) | 文献调研与综述 |

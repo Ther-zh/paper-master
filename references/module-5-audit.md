@@ -4,8 +4,34 @@
 
 **触发关键词**：审稿、挑毛病、投稿前、audit、review、reviewer、检查、预审、revise、revision
 
+## 0. 审稿证据阶段（v3.3，先取证再评审）
+
+> 来源：ScholarPeer（arXiv:2601.22638）的多智能体审稿框架。论文在 ~1,786 篇 ICLR
+> 2020–2025 投稿上报告：去掉 Q&A 引擎胜率 -26%，去掉 baseline scout -9%，去掉 summary -10%。
+> 这里只迁移机制，不迁移其 headline 数字。
+
+**默认深度审稿先跑本阶段；快速语言/格式检查可跳过，但报告必须标 `review_mode: quick`。**
+
+| 产物 | 作用 | 最低要求 |
+|---|---|---|
+| `EVIDENCE_FACTS.md` | 论文事实表 | claims / method / evidence / datasets / metrics 五项齐全 |
+| `DOMAIN_NARRATIVE.md` | 领域演进叙事 | 300–400 词：演进弧 + open problems + significance criteria |
+| `BASELINE_GAP.md` | 漏引 baseline/dataset | 每条含 name / reference / reason / compared 状态 |
+| `CLAIM_INTERROGATION.md` | 逐 claim 审问日志 | 每个 major claim ≥1 个 novelty Q + 1 个 soundness Q，附证据 |
+
+**四条硬规则**：
+1. 所有 novelty 检索限定 `cutoff_date`（论文首次公开/投稿日期）；不得用发表后的工作判断当时新颖性。
+2. 来源白名单：顶会/顶刊 + arXiv；每条外部证据必须有 URL/DOI/arXiv ID，搜不到写 `not_found`。
+3. 每条 Critical/Major 必须能指回四份产物的具体行/引文；指不回 → 降级为“待核实”。
+4. 不把“我没搜到”写成“不存在”；区分 `not_found` 与 `no_prior_art`。
+
+完整流程、prompt 模板、JSON schema 与预算（quick/standard/deep）见
+**[module-5-evidence.md](module-5-evidence.md)**。
+
 ## 工作流
 
+0. **先跑 §0 证据阶段**（深度审稿默认）：确定 `cutoff_date` → 事实表 → 领域叙事 →
+   漏引 baseline → 逐 claim Q&A；四份产物落盘后再进入评审。
 1. 从五个视角独立审读论文：
 
    - **方法学审稿人**：研究设计、统计严谨性、可重复性
@@ -80,7 +106,8 @@ Claim: "This is the first work to..."
 ### 方法层面
 - [ ] 方法描述是否足够详细让他人复现？
 - [ ] core 机制是否按注册表逐槽展开？"小体量高复杂度"机制是否被压成一句？（[ledgers.md](ledgers.md) §1）
-- [ ] 基线选择是否合理且覆盖 SOTA？
+- [ ] 基线选择是否合理且覆盖 SOTA？（对照 `BASELINE_GAP.md`，不是凭记忆）
+- [ ] novelty 判断是否限定在 `cutoff_date` 之前？（对照 `CLAIM_INTERROGATION.md`）
 - [ ] 超参数设置是否说明清楚？
 - [ ] 实验是否有足够的 ablation study？
 
@@ -99,6 +126,13 @@ Claim: "This is the first work to..."
 ## 输出格式
 
 ```
+## 审稿证据阶段（深度审稿必填）
+- cutoff_date: YYYY-MM-DD
+- EVIDENCE_FACTS.md: 存在 / 缺失
+- DOMAIN_NARRATIVE.md: 存在 / 缺失
+- BASELINE_GAP.md: 存在 / 缺失（漏引 N 条）
+- CLAIM_INTERROGATION.md: 存在 / 缺失（覆盖 M/N 个 major claim）
+
 ## 审稿预检报告
 
 ### 🚨 Red Flag 清单
@@ -160,6 +194,7 @@ Claim: "This is the first work to..."
 
 ## 与相关模块协作
 
+- → 模块5.0（证据阶段）：深度审稿先跑 [module-5-evidence.md](module-5-evidence.md)
 - → 模块9（引用验证）：引用问题作为审稿预检的一部分
 - → 模块2（段落润色）：发现写作问题后调用润色
 - → 模块13（防御性写作阻止）：本模块找问题，模块13 防自伤（交稿前 8 问自查，与对抗性自审互补）

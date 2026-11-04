@@ -116,4 +116,5 @@ flowchart TD
 ## 与相关模块协作
 
 - → 模块1（结构策略）：综述完成后输出到 Introduction/Related Work 结构
+- → 模块5.0（证据阶段）：若综述用于审稿，补 `DOMAIN_NARRATIVE.md` 与 `BASELINE_GAP.md`
 - → 模块9（引用验证）：验证所有纳入论文的引用真实性

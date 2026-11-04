@@ -155,4 +155,5 @@ python scripts/fetch_bib.py clean main.tex references.bib
 ## 与相关模块协作
 
 - → 模块5（审稿预检）：引用问题作为审稿预检的一部分
+- → 模块5.0（证据阶段）：本模块管“已引是否正确”，baseline scout 管“该引却没引”
 - → 模块8（文献调研）：验证调研阶段收集的文献
