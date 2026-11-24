@@ -2,7 +2,7 @@
 
 # Exemplar Index
 
-> 本库只打包卡片，不打包上游抽取的原文（papers/<slug>.md）。卡片里提到原文路径时，按卡片标注的会议/年份/标题自行获取。
+> 本库已打包 31 份上游抽取的原文（`papers/<slug>.md`，卡片引用的 15 份全部在内）；未打包的是完整 PDF。需要核对版式或图表时再按卡片标注的会议/年份/标题获取 PDF。
 
 Use this index to find original passages that help substantive drafting or a specific writing problem, including requested venue or exemplar adaptation. Load matching sections, then inspect the original passage. Do not load every card or rank writing quality by venue or awards.
 

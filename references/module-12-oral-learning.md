@@ -105,7 +105,7 @@
 - **先查目录**：[exemplars/index.md](exemplars/index.md) 列出每张卡的会议、年份、论文与该卡擅长说明的写法。不要遍历 `cards/` 目录。
 - **卡的结构**：Story Pattern / Abstract Moves / Introduction Moves / Method Moves / Evidence Moves / Citation Patterns / Reusable Techniques / Do-Not-Copy Boundary。
 - **新增一张卡**：`python scripts/convert_pdf_to_card.py <pdf> --output-dir references/exemplars/cards --full-text-dir references/exemplars/papers`，生成骨架后按上面八段逐段填。脚本不自动登记，填完后手工在 `index.md` 加一行；没有填完的卡不要登记。
-- **原文不随附**：卡片里提到的 `papers/<slug>.md` 是上游抽取文本，本库未打包。需要原文时按卡片标注的会议/年份/标题自行获取，不要把缺失原文当成卡片失效。
+- **原文随附**：卡片引用的 `papers/<slug>.md` 共 15 份已全部打包（库里另有 31 份抽取文本）。未打包的是完整 PDF；需要核对版式/图表时按卡片标注的会议、年份、标题自行获取。
 - **使用边界**：借叙事节奏、段落职责与证据组织，不复制原句，不搬运其科学主张。卡片是参照物，不是模板。
 
 与「服务 A/B」「七项做法」的关系：卡片提供**逐篇样例**，本模块的七项做法提供**抽象规则**；两者冲突时以用户论文的真实证据为准。
