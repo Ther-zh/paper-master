@@ -29,11 +29,8 @@
 | 期刊/会议 | 风格文件 | 特性 |
 |----------|---------|------|
 | Nature 系列 | [journal-styles/nature-cns.md](journal-styles/nature-cns.md) | 出版级图表规范、Nature 审稿视角、写作偏好（见模块2 7-Pass） |
-| AAAI | SKILL.md 内置 | 双栏、匿名化、页数限制 |
+| AAAI / ICML / NeurIPS / CVPR / ACM | `../paper-venue-master/references/venue-index.md` | 页数、匿名、模板与相机就绪规则统一在该 skill 核验，本模块不再维护副本 |
 | IEEE 期刊/会议 | 🆕 [venue/ieee.md](venue/ieee.md) | 非匿名、参考文献计入页数、`\cite{}` 非 natbib、IEEEtran 模板、IEEEkeywords |
-| ICML/NeurIPS | venue-checklists | 页数/复现性/匿名 |
-| CVPR | 待扩充 | — |
-| ACM | 待扩充 | — |
 
 > **注意**：7-Pass 编辑法的完整流程定义在 [模块2](module-2-polish.md) 中。本模块仅引用 Nature 特定的风格差异（如 Pass 6 的保守限定词偏好），执行润色时路由回模块2，避免内容重复。
 
@@ -84,6 +81,14 @@
 ```
 
 ---
+
+## 会议规则与模板（交给 paper-venue-master）
+
+本模块只保留**体裁级**风格规则（CS 工程、ML/CV/NLP、Nature/CNS、IEEE）。具体会议的页数、匿名、模板模式、相机就绪要求不在本模块维护，避免规则过期：
+
+- 会议级规则与模板 → `paper-venue-master`（其 `references/venue-index.md` 给出 109 个会议的官方链接与核验状态）。
+- 投稿包与复现清单 → `paper-venue-master/references/submission-checklist.md`。
+- 换投时先在新会议模板里验证页数与匿名，再回来做 Phase 1/2 的风格改写。
 
 ## 内置领域静态规则
 

@@ -103,6 +103,23 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 
 **各阶段详细指引**见 `references/workflow-W0-input.md`、`references/workflow-W1-plan.md`、`references/workflow-W2-write.md`、`references/workflow-W4-compile.md`、`references/workflow-W5-audit.md`。
 
+### 配套资源（按需加载，不要通读）
+
+| 阶段 | 资源 | 用途 |
+|------|------|------|
+| W0 项目起步 | `paper-venue-master`（同库 skill） | 建目录、整包复制会议模板、生成 `ccfa.yaml` |
+| W0 产物目录 | [references/artifact-contracts.md](references/artifact-contracts.md) | 工作目录、命名、清理、UTF-8/中文检查 |
+| W1 叙事 | [references/storyline-blueprint.md](references/storyline-blueprint.md) | 全文主线：问题→洞察→机制→证据 |
+| W1/W2 分节 | [references/section-modules.md](references/section-modules.md) | 每节该写什么、不该写什么 |
+| W2 文体参照 | [references/exemplars/index.md](references/exemplars/index.md) | 27 张 Oral/Best Paper 文体卡，按会议取用（先查 index） |
+| W2 新范文 | `scripts/convert_pdf_to_card.py` | 把用户给的 PDF 转成同结构卡片并登记 |
+| W4 编译 | `paper-venue-master` | 模板、页数、字体、匿名、camera-ready |
+| W6 压缩 | [references/compression-rules.md](references/compression-rules.md) | 先写全再压页，保科学关系与数字 |
+| W6 表达 | [references/prose-quality-guardrails.md](references/prose-quality-guardrails.md) | 段落逻辑与措辞兜底 |
+| W7 投稿 | `paper-venue-master` + 其 `references/submission-checklist.md` | 官方规则核验与投稿包检查 |
+
+投稿相关的页数、匿名、模板模式只认 `paper-venue-master` 核验过的官方当年规则；本 skill 不维护会议规则副本。
+
 ### 写入时生效原则（Born-Correct）
 
 **质检是安全网，不是主要执行点。** 每条原则必须在 W0–W2 有「写入时对应物」；W4–W6 只做兜底复核：
@@ -262,6 +279,13 @@ W7 投稿 ──> W6 适配/润色 ──> W5 审计 ─────────
 | [module-11-translation.md](references/module-11-translation.md) | 论文翻译 |
 | [module-12-oral-learning.md](references/module-12-oral-learning.md) | 🆕 优秀论文对照学习（Oral 蒸馏七项做法） |
 | [module-13-anti-defensive.md](references/module-13-anti-defensive.md) | 🆕 防御性写作阻止（发布会原则） |
+| [storyline-blueprint.md](references/storyline-blueprint.md) | 🆕 全文叙事主线：问题→洞察→机制→证据 |
+| [section-modules.md](references/section-modules.md) | 🆕 分节职责：每节写什么、不写什么 |
+| [compression-rules.md](references/compression-rules.md) | 🆕 压页规则：先写全再压，保关系保数字 |
+| [prose-quality-guardrails.md](references/prose-quality-guardrails.md) | 🆕 段落逻辑与措辞护栏 |
+| [artifact-contracts.md](references/artifact-contracts.md) | 🆕 产物目录、命名、清理与 UTF-8 约定 |
+| [exemplars/index.md](references/exemplars/index.md) | 🆕 27 张文体参照卡（含 Oral/Best Paper，按会议索引） |
+| [NOTICE-CCFA.md](NOTICE-CCFA.md) | 🆕 上述 CCFA 资产的来源与许可 |
 | [external-refs/](external-refs/) | 🆕 外部仓库快照（oral-paper-skill / anti-defensive-writing-Skill） |
 | [polish-prompts.md](references/polish-prompts.md) | 段落润色 Prompt 模板库 |
 | [domain-rules/ml-cv-nlp.md](references/domain-rules/ml-cv-nlp.md) | ML/CV/NLP 领域规则 |
